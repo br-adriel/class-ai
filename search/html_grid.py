@@ -1,6 +1,3 @@
-from grid import Grid
-
-
 def circle_svg(text: str = ""):
     """
     Returns a string containing a SVG code to crate a circle with an optional
@@ -29,7 +26,6 @@ class HTMLGrid:
         css (str): CSS styles for the grid.
 
     Args:
-        grid (Grid | None): A Grid object to initialize from (optional).
         dimension (tuple[int, int]): The dimensions of the grid (default: (0, 0)).
         start (int | None): The starting position (optional, default: None).
         goal (int | None): The goal position (optional, default: None).
@@ -77,23 +73,18 @@ class HTMLGrid:
     """.strip()
     
     def __init__(
-            self, *,
-            grid: Grid | None = None,
+            self,
             dimension: tuple[int, int] = (0, 0),
             start: int | None = None,
             goal: int | None = None,
             path: list[int] = [],
             obstacles: list[int] = []
             ):
-        if grid is not None:
-            self.dimension = grid.dimension
-            self.obstacles = grid.obstacles
-        else:
-            self.dimension = dimension
-            self.obstacles = obstacles
-
-        self.start = 0 if start is None else start
-        self.goal = self.dimension[0] * self.dimension[1] -1 if goal is None else goal
+        
+        self.dimension = dimension
+        self.obstacles = obstacles
+        self.start = 1 if start is None else start
+        self.goal = self.dimension[0] * self.dimension[1] if goal is None else goal
         
         self.path = path
 
@@ -126,10 +117,10 @@ class HTMLGrid:
         :rtype: None
         """
         html_content = "<main>"
-        for i in range(self.dimension[1]):
+        for i in range(1, self.dimension[1] +1):
             html_content += "<div class='line'>"
-            for j in range(self.dimension[0]):
-                position = i * self.dimension[1] + j
+            for j in range(1, self.dimension[0] +1):
+                position = (i -1) * self.dimension[1] + j
 
                 html_content += "<div class='square"
 
