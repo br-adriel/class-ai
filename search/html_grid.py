@@ -111,7 +111,7 @@ class HTMLGrid:
         self.html_end = "</body></html>"
         
         
-    def generateFile(self, filename: str = "grid"):
+    def generate_file(self, filename: str = "grid"):
         """
         Generates an HTML file with a grid visualization.
 
