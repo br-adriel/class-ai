@@ -1,5 +1,13 @@
 from typing import Union
 
+USAGE = """\
+Create an HTML description of a grid and a solution path.
+
+{} <method> <graph>
+  <method> - a: A-STAR (heuristic: Euclidean distance), b: BFS, d: DFS.
+  <graph> - The graph description from a TGF file.\
+"""
+
 def circle_svg(text: str = ""):
     """
     Returns a string containing a SVG code to create a circle with an optional
@@ -65,7 +73,7 @@ class HTMLGrid:
             goal: Union[int, None] = None,
             path: list[int] = [],
             obstacles: list[int] = []
-            ):
+        ):
         
         self.dimension = dimension
         self.obstacles = obstacles
@@ -94,27 +102,60 @@ class HTMLGrid:
         """
         html_content = "<main>"
         for i in range(1, self.dimension[1] +1):
+            # add div that represent a line
             html_content += "<div class='line'>"
+
             for j in range(1, self.dimension[0] +1):
+                # position of the current cell
                 position = (i -1) * self.dimension[1] + j
 
+                # start creation of cell div
                 html_content += "<div class='square"
 
+                # add style classes according to cell role
                 if position in self.obstacles:
                     html_content += " blocked "
                 elif position in self.path:
                     html_content += " used "
 
+                # add svg circle marking start and finish cells
                 if position == self.start:
                     html_content += f"'><span>{i}-{j}</span>{circle_svg('START')}</div>"
                 elif position == self.goal:
                     html_content += f"'><span>{i}-{j}</span>{circle_svg('END')}</div>"
                 else:
                     html_content += f"'><span>{i}-{j}</span></div>"
+            
+            # close cell div
             html_content += "</div>"
         html_content += "</main>"
-
 
         # saving the file
         with open(filename + '.html', 'w') as html_file:
             html_file.write(self.html_start + html_content + self.html_end)
+
+if __name__ == "__main__":
+    """
+    """
+    import sys
+    import tgf
+    import graph
+    import utils
+
+    if len(sys.argv) > 2:
+        t = tgf.TGF(sys.argv[2])
+        g = graph.Graph()
+        t.read(g)
+        ans = g.search(g.nodes[0], g.nodes[-1], graph.METHOD[sys.argv[1]])
+ 
+        o = list(range(1, t.dimension[0] * t.dimension[1] + 1))
+        for n in g.nodes:
+            if int(n) in o:
+                o.remove(int(n))
+ 
+        hg = HTMLGrid(t.dimension,
+                      path = utils.path_dict_to_list(ans),
+                      obstacles = o)
+        hg.generate_file("grid-" + sys.argv[1])
+    else:
+        print(USAGE.format(sys.argv[0]))
