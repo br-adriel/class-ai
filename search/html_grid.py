@@ -1,3 +1,5 @@
+from typing import Union
+
 def circle_svg(text: str = ""):
     """
     Returns a string containing a SVG code to crate a circle with an optional
@@ -75,8 +77,8 @@ class HTMLGrid:
     def __init__(
             self,
             dimension: tuple[int, int] = (0, 0),
-            start: int | None = None,
-            goal: int | None = None,
+            start: Union[int, None] = None,
+            goal: Union[int, None] = None,
             path: list[int] = [],
             obstacles: list[int] = []
             ):

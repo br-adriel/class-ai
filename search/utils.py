@@ -1,4 +1,6 @@
-def path_dict_to_list(path: dict[str, int | None]) -> list[int]:
+from typing import Union
+
+def path_dict_to_list(path: dict[str, Union[int, None]]) -> list[int]:
     """
     Converts a path dictionary into a list of integers.
 
