@@ -2,7 +2,7 @@ from typing import Union
 
 def circle_svg(text: str = ""):
     """
-    Returns a string containing a SVG code to crate a circle with an optional
+    Returns a string containing a SVG code to create a circle with an optional
     text on its center.
     """
     return """
