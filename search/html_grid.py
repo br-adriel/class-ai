@@ -4,12 +4,6 @@ def circle_svg(text: str = ""):
     """
     Returns a string containing a SVG code to crate a circle with an optional
     text on its center.
-
-    :param text: Text shown in the circle center (optional).
-    :type text: str
-
-    :return: A string containing a SVG code to draw a circle.
-    :rtype: str
     """
     return """
     <svg height="100" width="100">
@@ -23,16 +17,6 @@ def circle_svg(text: str = ""):
 class HTMLGrid:
     """
     HTMLGrid class for generating an HTML grid visualization.
-
-    Attributes:
-        css (str): CSS styles for the grid.
-
-    Args:
-        dimension (tuple[int, int]): The dimensions of the grid (default: (0, 0)).
-        start (int | None): The starting position (optional, default: None).
-        goal (int | None): The goal position (optional, default: None).
-        path (list[int]): List of positions representing the path (default: []).
-        obstacles (list[int]): List of positions representing obstacles (default: []).
     """
 
     css = """
@@ -107,16 +91,6 @@ class HTMLGrid:
     def generate_file(self, filename: str = "grid"):
         """
         Generates an HTML file with a grid visualization.
-
-        This method generates an HTML file containing a grid based on the class's
-        attributes. The grid includes squares representing positions, and it may
-        highlight obstacles, the start, and the goal positions.
-
-        :param filename: The name of the HTML file to be generated (default: 'grid').
-        :type filename: str
-
-        :return: None
-        :rtype: None
         """
         html_content = "<main>"
         for i in range(1, self.dimension[1] +1):
