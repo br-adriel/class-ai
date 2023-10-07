@@ -47,7 +47,7 @@ class HTMLGrid:
         display: flex;
         width: auto;
     }
-    """
+    """.replace("  ", "")
 
     def __init__(
         self,
@@ -76,7 +76,7 @@ class HTMLGrid:
                 <style>{}</style>
             </head>
             <body>
-        """.format(self.css).strip()
+        """.format(self.css).strip().replace("  ", "")
         self.html_end = "</body></html>"
 
     def generate_file(self, filename: str = "grid"):
@@ -98,7 +98,7 @@ class HTMLGrid:
                     <div class='square'>
                         <span>{i}-{j}</span>
                         <svg width='100' height='100' viewBox='0 0 100 100'>
-                """
+                """.strip().replace("  ", "")
 
                 # add style classes according to cell role
                 if position in self.obstacles:
@@ -140,7 +140,8 @@ class HTMLGrid:
 
         # saving the file
         with open(filename + '.html', 'w') as html_file:
-            html_file.write(self.html_start + html_content + self.html_end)
+            html = self.html_start + html_content + self.html_end
+            html_file.write(html.replace("\n", ""))
 
 
 if __name__ == "__main__":
