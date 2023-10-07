@@ -94,7 +94,11 @@ class HTMLGrid:
                 shape_text = 'START' if position == self.start else ''
 
                 # start creation of cell div
-                html_content += "<div class='square'>"
+                html_content += f"""
+                    <div class='square'>
+                        <span>{i}-{j}</span>
+                        <svg width='100' height='100' viewBox='0 0 100 100'>
+                """
 
                 # add style classes according to cell role
                 if position in self.obstacles:
@@ -125,11 +129,12 @@ class HTMLGrid:
 
                 # add svg circle marking start and finish cells
                 if position == self.goal:
-                    html_content += f"<span>{i}-{j}</span>{square_svg(color='#00E676', text='END', use_circle=True)}</div>"
-                else:
-                    html_content += f"<span>{i}-{j}</span></div>"
+                    html_content += square_svg(color='#00E676',
+                                               text='END', use_circle=True)
 
-            # close cell div
+                # close cell div
+                html_content += "</svg></div>"
+            # clone line div
             html_content += "</div>"
         html_content += "</main>"
 

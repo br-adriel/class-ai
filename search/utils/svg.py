@@ -4,12 +4,10 @@ def circle_svg(text: str = ""):
     text on its center.
     """
     return """
-    <svg height="100" width="100">
       <circle cx="49" cy="49" r="35" fill="#303F9F" />
       <text x="50" y="50" font-size="16" text-anchor="middle" fill="white">
         {}
       </text>
-    </svg>
     """.format(text)
 
 
@@ -30,23 +28,17 @@ def square_svg(color="#fff", arrow_direction: str = "", text: str = "", use_circ
 
     if use_circle:
         return f"""
-        <svg width='100' height='100' viewBox='0 0 100 100'>
             <rect width='100' height='100' fill='{color}' />
             {circle_svg(text)}
-        </svg>
         """
     if arrow_direction == "":
         return f"""
-        <svg width='100' height='100' viewBox='0 0 100 100'>
             <rect width='100' height='100' fill='{color}' />
-        </svg>
         """
     return f"""
-        <svg width='100' height='100' viewBox='0 0 100 100'>
-            <rect width='100' height='100' fill='{color}' />
-            <polygon points="{points}" fill="#303F9F" />
-            <text x="50" y="20" font-size="16" text-anchor="middle" fill="#303F9F">
-                {text}
-            </text>
-        </svg>
+        <rect width='100' height='100' fill='{color}' />
+        <polygon points="{points}" fill="#303F9F" />
+        <text x="50" y="20" font-size="16" text-anchor="middle" fill="#303F9F">
+            {text}
+        </text>
         """
