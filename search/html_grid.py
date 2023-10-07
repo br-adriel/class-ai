@@ -23,7 +23,6 @@ class HTMLGrid:
     }
 
     .square {
-        background: #fff;
         width: 100px;
         min-width: 100px;
         height: 100px;
@@ -33,26 +32,22 @@ class HTMLGrid:
         position: relative;
     }
 
+    .square svg {
+        width: 100%;
+        height: 100%;
+    }
+
     .square span {
         position: absolute;
         top: 2px;
         left: 2px;
     }
 
-    .blocked {
-        background: #D32F2F;
-        color: #fff;
-    }
-
-    .used {
-        background: #00E676;
-    }
-
     .line {
         display: flex;
         width: auto;
     }
-    """.strip()
+    """
 
     def __init__(
         self,
