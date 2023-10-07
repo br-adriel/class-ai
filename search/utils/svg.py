@@ -16,14 +16,14 @@ def circle_svg(text: str = ""):
 def square_svg(color="#fff", arrow_direction: str = "", text: str = "", use_circle: bool = False) -> str:
     """
     Returns a string containing a SVG code to create a square with an optional
-    arrow drawn on its center.
+    arrow or circle drawn on its center.
     """
     points = ""
     if arrow_direction == "left":
         points = "25,50 75,25 75,75"
     elif arrow_direction == "right":
         points = "25,25 25,75 75,50"
-    elif arrow_direction == "top":
+    elif arrow_direction == "up":
         points = "50,25 25,75 75,75"
     elif arrow_direction == "down":
         points = "25,25 75,25 50,75"
