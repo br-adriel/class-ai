@@ -1,44 +1,70 @@
-def circle_svg(text: str = ""):
+def circle_svg(text: str = "", x: int = 0, y: int = 0) -> str:
     """
     Returns a string containing a SVG code to create a circle with an optional
     text on its center.
     """
-    return """
-      <circle cx="49" cy="49" r="35" fill="#303F9F" />
-      <text x="50" y="50" font-size="16" text-anchor="middle" fill="white">
-        {}
-      </text>
-    """.format(text)
+    return f"""
+        <circle cx="{x + 49}" cy="{y + 49}" r="35" fill="#303F9F" />
+        {text_svg(text=text, x=x + 50, y=y+50)}
+    """
 
 
-def square_svg(color="#fff", arrow_direction: str = "", text: str = "", use_circle: bool = False) -> str:
+def text_svg(
+    text: str = "",
+    color: str = "#fff",
+    x: int = 0,
+    y: int = 0
+) -> str:
+    """
+    Returns a string containing a SVG code to create a centered text
+    """
+    return f"""
+    <text x="{x}" y="{y}" font-size="16" text-anchor="middle" fill="{color}">
+        {text}
+    </text>
+    """
+
+
+def square_svg(
+    color="#fff",
+    arrow_direction: str = "",
+    text: str = "",
+    use_circle: bool = False,
+    x: int = 0,
+    y: int = 0,
+    border: bool = False,
+) -> str:
     """
     Returns a string containing a SVG code to create a square with an optional
     arrow or circle drawn on its center.
     """
     points = ""
     if arrow_direction == "left":
-        points = "25,50 75,25 75,75"
+        points = f"{25+x},{50+y} {75+x},{25+y} {75+x},{75+y}"
     elif arrow_direction == "right":
-        points = "25,25 25,75 75,50"
+        points = f"{25+x},{25+y} {25+x},{75+y} {75+x},{50+y}"
     elif arrow_direction == "up":
-        points = "50,25 25,75 75,75"
+        points = f"{50+x},{25+y} {25+x},{75+y} {75+x},{75+y}"
     elif arrow_direction == "down":
-        points = "25,25 75,25 50,75"
+        points = f"{25+x},{25+y} {75+x},{25+y} {50+x},{75+y}"
 
     if use_circle:
         return f"""
-            <rect width='100' height='100' fill='{color}' />
-            {circle_svg(text)}
+            <rect width='100' height='100' fill='{color}' x='{x}' y='{y}'
+                {'' if not border else "stroke='black' stroke-width='1'"}
+            />
+            {circle_svg(text, x=x, y=y)}
         """
     if arrow_direction == "":
         return f"""
-            <rect width='100' height='100' fill='{color}' />
+            <rect width='100' height='100' fill='{color}' x='{x}' y='{y}'
+                {'' if not border else "stroke='black' stroke-width='1'"}
+            />
         """
     return f"""
-        <rect width='100' height='100' fill='{color}' />
+        <rect width='100' height='100' fill='{color}' x='{x}' y='{y}' 
+            {'' if not border else "stroke='black' stroke-width='1'"}
+        />
         <polygon points="{points}" fill="#303F9F" />
-        <text x="50" y="20" font-size="16" text-anchor="middle" fill="#303F9F">
-            {text}
-        </text>
+        {text_svg(text, "#303f9f", x+50, y+20)}
         """
