@@ -3,10 +3,9 @@ def circle_svg(text: str = "", x: int = 0, y: int = 0) -> str:
     Returns a string containing a SVG code to create a circle with an optional
     text on its center.
     """
-    return f"""
-        <circle cx="{x + 49}" cy="{y + 49}" r="35" fill="#303F9F" />
-        {text_svg(text=text, x=x + 50, y=y+50)}
-    """
+    svg = f"<circle cx='{x + 49}' cy='{y + 49}' r='35' fill='#303F9F' />"
+    svg += text_svg(text=text, x=x + 50, y=y+50)
+    return svg
 
 
 def text_svg(
@@ -18,11 +17,9 @@ def text_svg(
     """
     Returns a string containing a SVG code to create a centered text
     """
-    return f"""
-    <text x="{x}" y="{y}" font-size="16" text-anchor="middle" fill="{color}">
-        {text}
-    </text>
-    """
+    svg = f"<text x='{x}' y='{y}' font-size='16' text-anchor='middle' fill='{color}'>"
+    svg += text + "</text>"
+    return svg
 
 
 def square_svg(
@@ -49,22 +46,18 @@ def square_svg(
         points = f"{25+x},{25+y} {75+x},{25+y} {50+x},{75+y}"
 
     if use_circle:
-        return f"""
-            <rect width='100' height='100' fill='{color}' x='{x}' y='{y}'
-                {'' if not border else "stroke='black' stroke-width='1'"}
-            />
-            {circle_svg(text, x=x, y=y)}
-        """
+        svg = f"<rect width='100' height='100' fill='{color}' x='{x}' y='{y}' "
+        svg += '' if not border else "stroke='black' stroke-width='1' "
+        svg += '/>' + circle_svg(text, x=x, y=y)
+        return svg
     if arrow_direction == "":
-        return f"""
-            <rect width='100' height='100' fill='{color}' x='{x}' y='{y}'
-                {'' if not border else "stroke='black' stroke-width='1'"}
-            />
-        """
-    return f"""
-        <rect width='100' height='100' fill='{color}' x='{x}' y='{y}' 
-            {'' if not border else "stroke='black' stroke-width='1'"}
-        />
-        <polygon points="{points}" fill="#303F9F" />
-        {text_svg(text, "#303f9f", x+50, y+20)}
-        """
+        svg = f"<rect width='100' height='100' fill='{color}' x='{x}' y='{y}' "
+        svg += '' if not border else "stroke='black' stroke-width='1' "
+        svg += "/>"
+        return svg
+
+    svg = f"<rect width='100' height='100' fill='{color}' x='{x}' y='{y}' "
+    svg += '' if not border else "stroke='black' stroke-width='1' "
+    svg += f"/><polygon points='{points}' fill='#303F9F' />"
+    svg += text_svg(text, '#303f9f', x+50, y+20)
+    return svg
