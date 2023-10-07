@@ -1,5 +1,5 @@
 from typing import Union
-from utils.svg import circle_svg, square_svg
+from utils.svg import square_svg
 
 USAGE = """\
 Create an HTML description of a grid and a solution path.
