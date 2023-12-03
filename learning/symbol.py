@@ -1,13 +1,12 @@
+import neuron
+import random
+import cairo
+import copy
+import sys
+from gi.repository import Gtk, Gdk, GLib
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk, GLib
 
-import sys
-import copy
-import cairo
-import random
-
-import neuron
 
 USAGE = """\
 Visual representation of Perceptron learning process for symbols.
@@ -17,48 +16,144 @@ Visual representation of Perceptron learning process for symbols.
   <gain> - Noise gain (should be a value between 0.0 and 1.0).\
 """
 
-X = [[0,0,1,0,0,
-      0,1,0,1,0,
-      0,1,1,1,0,
-      0,1,0,1,0,
-      0,1,0,1,0],
+DIGITS = [
+    [
+        0, 0, 0, 1, 0,
+        0, 0, 0, 1, 0,
+        0, 0, 0, 1, 0,
+        0, 0, 0, 1, 0,
+        0, 0, 0, 1, 0
+    ],
+    [
+        0, 1, 1, 1, 0,
+        0, 0, 0, 1, 0,
+        0, 1, 1, 1, 0,
+        0, 1, 0, 0, 0,
+        0, 1, 1, 1, 0
+    ],
+    [
+        0, 1, 1, 1, 0,
+        0, 0, 0, 1, 0,
+        0, 1, 1, 1, 0,
+        0, 0, 0, 1, 0,
+        0, 1, 1, 1, 0
+    ],
+    [
+        0, 1, 0, 1, 0,
+        0, 1, 0, 1, 0,
+        0, 1, 1, 1, 0,
+        0, 0, 0, 1, 0,
+        0, 0, 0, 1, 0
+    ],
+    [
+        0, 1, 1, 1, 0,
+        0, 1, 0, 0, 0,
+        0, 1, 1, 1, 0,
+        0, 0, 0, 1, 0,
+        0, 1, 1, 1, 0
+    ],
+    [
+        0, 1, 1, 1, 0,
+        0, 1, 0, 0, 0,
+        0, 1, 1, 1, 0,
+        0, 1, 0, 1, 0,
+        0, 1, 1, 1, 0
+    ],
+    [
+        0, 1, 1, 1, 0,
+        0, 0, 0, 1, 0,
+        0, 0, 0, 1, 0,
+        0, 0, 0, 1, 0,
+        0, 0, 0, 1, 0
+    ],
+    [
+        0, 1, 1, 1, 0,
+        0, 1, 0, 1, 0,
+        0, 1, 1, 1, 0,
+        0, 1, 0, 1, 0,
+        0, 1, 1, 1, 0
+    ],
+    [
+        0, 1, 1, 1, 0,
+        0, 1, 0, 1, 0,
+        0, 1, 1, 1, 0,
+        0, 0, 0, 1, 0,
+        0, 1, 1, 1, 0
+    ],
+    [
+        0, 1, 1, 1, 0,
+        0, 1, 0, 1, 0,
+        0, 1, 0, 1, 0,
+        0, 1, 0, 1, 0,
+        0, 1, 1, 1, 0
+    ]
+]
 
-     [0,1,1,1,0,
-      0,1,0,0,0,
-      0,1,1,0,0,
-      0,1,0,0,0,
-      0,1,1,1,0],
+SYMBOLS = [
+    [
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 1, 1, 1, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0
+    ],
+    [
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 1, 0, 0
+    ]
+]
 
-     [0,1,1,1,0,
-      0,0,1,0,0,
-      0,0,1,0,0,
-      0,0,1,0,0,
-      0,1,1,1,0],
+X = [[0, 0, 1, 0, 0,
+      0, 1, 0, 1, 0,
+      0, 1, 1, 1, 0,
+      0, 1, 0, 1, 0,
+      0, 1, 0, 1, 0],
 
-     [0,0,1,0,0,
-      0,1,0,1,0,
-      0,1,0,1,0,
-      0,1,0,1,0,
-      0,0,1,0,0],
+     [0, 1, 1, 1, 0,
+      0, 1, 0, 0, 0,
+      0, 1, 1, 0, 0,
+      0, 1, 0, 0, 0,
+      0, 1, 1, 1, 0],
 
-     [0,1,0,1,0,
-      0,1,0,1,0,
-      0,1,0,1,0,
-      0,1,0,1,0,
-      0,0,1,0,0],
+     [0, 1, 1, 1, 0,
+      0, 0, 1, 0, 0,
+      0, 0, 1, 0, 0,
+      0, 0, 1, 0, 0,
+      0, 1, 1, 1, 0],
 
-     [1,0,0,0,1,
-      1,0,0,0,1,
-      1,1,1,1,1,
-      1,0,0,0,1,
-      1,0,0,0,1]]
+     [0, 0, 1, 0, 0,
+      0, 1, 0, 1, 0,
+      0, 1, 0, 1, 0,
+      0, 1, 0, 1, 0,
+      0, 0, 1, 0, 0],
+
+     [0, 1, 0, 1, 0,
+      0, 1, 0, 1, 0,
+      0, 1, 0, 1, 0,
+      0, 1, 0, 1, 0,
+      0, 0, 1, 0, 0],
+
+     [1, 0, 0, 0, 1,
+      1, 0, 0, 0, 1,
+      1, 1, 1, 1, 1,
+      1, 0, 0, 0, 1,
+      1, 0, 0, 0, 1]]
 
 #    A  E  I  O  U  H
 Y = [1, 0, 0, 0, 0, 0]
 
+X = DIGITS + SYMBOLS
+#    1  2  3  4  5  6  7  8  9  0  -  .
+Y = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+
 class Plot2DWeights(Gtk.Window):
     """
     """
+
     def __init__(self, neuron, write_to_file=False, width=256, height=256):
         """
         """
@@ -83,15 +178,15 @@ class Plot2DWeights(Gtk.Window):
         # callback
         self.drawing_area.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
         self.drawing_area.connect('button-press-event', self.on_mouse_pressed)
- 
+
         # Tell the drawing area to render
         self.drawing_area.queue_draw()
         GLib.timeout_add(self.refresh_rate, self.refresh_screen)
- 
+
         # Show the window
         self.show_all()
         Gtk.main()
- 
+
     def refresh_screen(self):
         """
         """
@@ -107,17 +202,17 @@ class Plot2DWeights(Gtk.Window):
         This is the draw function, that will be called every time `queue_draw`
         is called on the drawing area. Currently, this is setup to be every
         frame, 60 times per second.
-        
+
         Ported from the first example here, with minimal changes:
         https://www.cairographics.org/samples/
         context - cairo.Context
         """
         self.neuron.weights
-    
+
         context.set_source_rgb(0.0, 1 - self.neuron.changed, 0.0)
         context.rectangle(0, 0, 256, 256)
         context.fill()
-    
+
         context.set_source_rgb(1.0, 1.0, 1.0)
         context.rectangle(28, 28, 200, 200)
         context.fill()
@@ -158,9 +253,9 @@ class Plot2DWeights(Gtk.Window):
         allocation = drawing_area.get_allocation()
         width = allocation.width
         height = allocation.height
-    
+
         self.draw(context, width, height)
-    
+
     def on_mouse_pressed(self, drawing_area, event, *data):
         """
         This is called when the mouse is pressed
@@ -191,15 +286,18 @@ class Plot2DWeights(Gtk.Window):
         self.drawing_area.surface.flush()
         self.drawing_area.surface.finish()
 
+
 def invert(a):
     """
     """
-    return 1 - a 
+    return 1 - a
+
 
 def f_rand():
     """
     """
     return 2 * random.random() - 1
+
 
 if __name__ == '__main__':
     """
