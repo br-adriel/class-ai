@@ -1,11 +1,12 @@
+import gi
+gi.require_version('Gtk', '3.0')
+
 import neuron
 import random
 import cairo
 import copy
 import sys
 from gi.repository import Gtk, Gdk, GLib
-import gi
-gi.require_version('Gtk', '3.0')
 
 
 USAGE = """\
