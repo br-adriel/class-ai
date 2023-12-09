@@ -13,8 +13,14 @@ Assessment of TicTacToe game.
 EMPTY = "_"
 CROSS = "x"
 ROUND = "o"
-
 DRAW = "?"
+
+COUNTER = {CROSS: 0, ROUND: 0, DRAW: 0}
+
+COLOR = {EMPTY: "#cccccc",
+         CROSS: "#ccffcc",
+         ROUND: "#ffcccc",
+         DRAW: "#ccccff"}
 
 COUNT = 0
 
@@ -31,10 +37,10 @@ class State:
         self.status = status
         self.children = []
 
-    def add_child(self, state):
+    def add_child(self, state, position, player):
         """
         """
-        self.children.append(state)
+        self.children.append([state, position, player])
 
 def empty_positions(state):
     """
@@ -91,14 +97,65 @@ def print_dot():
     """
     """
     print("digraph {")
+    print("  fontname=\"Monospace\"")
+    print("  node [shape=box,fontname=\"Monospace\",style=filled]")
+    print("  edge [fontname=\"Monospace\",color=\"#cccccc\"]")
     for k in STATES:
-        print("{} [label=\"{}\"]".format(k, STATES[k].state))
+        line1 = STATES[k].state[:3]
+        line2 = STATES[k].state[3:6]
+        line3 = STATES[k].state[6:]
+        status = COLOR[STATES[k].status]
+        print("  {} [label=\"{}\\n{}\\n{}\",color=\"{}\"]".format(k,
+                                                                  line1,
+                                                                  line2,
+                                                                  line3,
+                                                                  status))
     for k in STATES:
-        for d in STATES[k].children:
-            print("{} -> {}".format(k, d))
+        for state, position, player in STATES[k].children:
+            print("  {} -> {} [label=\"{}:{}\"]".format(k,
+                                                        state,
+                                                        position,
+                                                        player))
     print("}")
 
-def search(state, player, root=0):
+def print_state(state):
+    """
+    """
+    print(" ".join(state[:3]))
+    print(" ".join(state[3:6]))
+    print(" ".join(state[6:]))
+
+def choose_position(values):
+    """
+    """
+    return list(values)[0]
+
+def play(state):
+    """
+    """
+    while verify_status(state) == EMPTY:
+        print_state(state)
+        position = int(input("play 'x' on position: "))
+        state[position] = CROSS
+        if verify_status(state) == EMPTY:
+            print_state(state)
+            values = {}
+            for position in empty_positions(state):
+                global COUNTER
+                COUNTER = {CROSS: 0, ROUND: 0, DRAW: 0}
+                state[position] = ROUND
+                search(state, CROSS)
+                state[position] = EMPTY
+                print(position, COUNTER)
+                values[position] = COUNTER
+            position = choose_position(values)
+            #position = int(input("play 'o' on position: "))
+            state[position] = ROUND
+    print_state(state)
+    print("result:", verify_status(state))
+
+
+def search(state, player, root=0, position=None):
     """
     """
     global COUNT
@@ -107,20 +164,23 @@ def search(state, player, root=0):
     status = verify_status(state)
     STATES[count] = State(count, state, status)
     if root > 0:
-        STATES[root].add_child(count)
+        STATES[root].add_child(count, position, change_player(player))
     if status == EMPTY:
         for p in empty_positions(state):
             state[p] = player
             player = change_player(player)
-            search(state, player, count)
-            state[p] = '_'
+            search(state, player, count, p)
+            state[p] = EMPTY
             player = change_player(player)
+    else:
+        COUNTER[status] += 1
 
 if __name__ == "__main__":
     if len(sys.argv) == 3:
         player = sys.argv[1]
         state = list(sys.argv[2])
-        search(state, player)
-        print_dot()
+        #search(state, player)
+        #print_dot()
+        play(state)
     else:
         print(USAGE.format(sys.argv[0]))
