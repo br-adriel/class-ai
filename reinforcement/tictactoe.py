@@ -26,9 +26,11 @@ COUNT = 0
 
 STATES = {}
 
+
 class State:
     """
     """
+
     def __init__(self, sid, state, status):
         """
         """
@@ -42,6 +44,7 @@ class State:
         """
         self.children.append([state, position, player])
 
+
 def empty_positions(state):
     """
     """
@@ -53,6 +56,7 @@ def empty_positions(state):
         ans.append(p)
         p = p + 1
     return ans
+
 
 def verify_status(state):
     """
@@ -81,10 +85,11 @@ def verify_status(state):
 
     if (state[0] != EMPTY and state[1] != EMPTY and state[2] != EMPTY and
         state[3] != EMPTY and state[4] != EMPTY and state[5] != EMPTY and
-        state[6] != EMPTY and state[7] != EMPTY and state[8] != EMPTY):
+            state[6] != EMPTY and state[7] != EMPTY and state[8] != EMPTY):
         return DRAW
 
     return EMPTY
+
 
 def change_player(player):
     """
@@ -92,6 +97,7 @@ def change_player(player):
     if player == CROSS:
         return ROUND
     return CROSS
+
 
 def print_dot():
     """
@@ -118,6 +124,7 @@ def print_dot():
                                                         player))
     print("}")
 
+
 def print_state(state):
     """
     """
@@ -125,10 +132,12 @@ def print_state(state):
     print(" ".join(state[3:6]))
     print(" ".join(state[6:]))
 
+
 def choose_position(values):
     """
     """
     return list(values)[0]
+
 
 def play(state):
     """
@@ -149,7 +158,8 @@ def play(state):
                 print(position, COUNTER)
                 values[position] = COUNTER
             position = choose_position(values)
-            #position = int(input("play 'o' on position: "))
+            print('state', state)
+            # position = int(input("play 'o' on position: "))
             state[position] = ROUND
     print_state(state)
     print("result:", verify_status(state))
@@ -175,12 +185,13 @@ def search(state, player, root=0, position=None):
     else:
         COUNTER[status] += 1
 
+
 if __name__ == "__main__":
     if len(sys.argv) == 3:
         player = sys.argv[1]
         state = list(sys.argv[2])
-        #search(state, player)
-        #print_dot()
+        # search(state, player)
+        # print_dot()
         play(state)
     else:
         print(USAGE.format(sys.argv[0]))
