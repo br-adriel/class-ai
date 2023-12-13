@@ -1,5 +1,6 @@
 import sys
 import random
+import ticbot
 
 USAGE = """\
 Assessment of TicTacToe game.
@@ -136,7 +137,7 @@ def print_state(state):
 def choose_position(values):
     """
     """
-    return list(values)[0]
+    return ticbot.choose_next_position(values)
 
 
 def play(state):
