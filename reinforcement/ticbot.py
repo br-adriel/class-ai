@@ -17,6 +17,8 @@ def smallest_opponent_win_options(values, oponent_symbol = 'x'):
 def highest_win_options(values: list[str],
                         lookup_keys: list[str],
                         player_symbol: str = 'o') -> list[str]:
+    """Returns a list which contains the best keys for a win in the game"""
+
     highest_win: int = -1
     highest_win_keys: list[str] = []
 
