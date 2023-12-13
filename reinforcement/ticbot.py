@@ -43,3 +43,16 @@ def highest_tie_options(values, lookup_keys):
 
     return highest_tie_keys
 
+
+def choose_next_position(values: list[str], player_symbol: str = 'o') -> str:
+    smallest_opponent_chances = smallest_opponent_win_options(
+        values,
+        'o' if player_symbol == 'x' else 'x'
+    )
+    highest_win_chances = highest_win_options(
+        values,
+        smallest_opponent_chances,
+        player_symbol
+    )
+    preferabole_options = highest_tie_options(values, highest_win_chances)
+    return preferabole_options[0]
