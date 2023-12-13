@@ -13,9 +13,12 @@ def smallest_opponent_win_options(values, oponent_symbol = 'x'):
 
     return smallest_opponent_win_keys
 
-def highest_win_options(values, lookup_keys, player_symbol = 'o'):
-    highest_win = -1
-    highest_win_keys = []
+
+def highest_win_options(values: list[str],
+                        lookup_keys: list[str],
+                        player_symbol: str = 'o') -> list[str]:
+    highest_win: int = -1
+    highest_win_keys: list[str] = []
 
     for key in lookup_keys:
         wins = values[key][player_symbol]
