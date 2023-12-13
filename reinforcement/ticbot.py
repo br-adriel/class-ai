@@ -28,9 +28,10 @@ def highest_win_options(values, lookup_keys, player_symbol = 'o'):
 
     return highest_win_keys
 
-def highest_tie_options(values, lookup_keys):
-    highest_tie = -1
-    highest_tie_keys = []
+
+def highest_tie_options(values: list[str], lookup_keys: list[str]) -> list[str]:
+    highest_tie: int = -1
+    highest_tie_keys: list[str] = []
 
     for key in lookup_keys:
         ties = values[key]['?']
