@@ -45,6 +45,7 @@ def highest_tie_options(values, lookup_keys):
 
 
 def choose_next_position(values: list[str], player_symbol: str = 'o') -> str:
+    """Chooses the next position based on loss/win/draw count for each position"""
     smallest_opponent_chances = smallest_opponent_win_options(
         values,
         'o' if player_symbol == 'x' else 'x'
