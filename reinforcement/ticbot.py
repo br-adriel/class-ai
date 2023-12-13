@@ -7,7 +7,7 @@ def smallest_opponent_win_options(values, oponent_symbol = 'x'):
         if opponent_wins == smallest_opponent_win:
             smallest_opponent_win = opponent_wins
             smallest_opponent_win_keys.append(key)
-        elif opponent_wins > smallest_opponent_win:
+        elif opponent_wins < smallest_opponent_win:
             smallest_opponent_win = opponent_wins
             smallest_opponent_win_keys = [key]
 
