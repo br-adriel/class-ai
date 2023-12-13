@@ -1,6 +1,7 @@
-def smallest_opponent_win_options(values, oponent_symbol = 'x'):
-    smallest_opponent_win = float('inf')
-    smallest_opponent_win_keys = []
+def smallest_opponent_win_options(values: list[str],
+                                  oponent_symbol: str = 'x') -> list[str]:
+    smallest_opponent_win: float = float('inf')
+    smallest_opponent_win_keys: list[str] = []
 
     for key, values in values.items():
         opponent_wins = values[oponent_symbol]
