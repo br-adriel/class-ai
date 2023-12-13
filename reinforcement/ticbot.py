@@ -1,5 +1,6 @@
 def smallest_opponent_win_options(values: list[str],
                                   oponent_symbol: str = 'x') -> list[str]:
+    """Returns a list which contains the worst keys for a win by the oponent"""
     smallest_opponent_win: float = float('inf')
     smallest_opponent_win_keys: list[str] = []
 
