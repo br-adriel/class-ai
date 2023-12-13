@@ -30,6 +30,7 @@ def highest_win_options(values, lookup_keys, player_symbol = 'o'):
 
 
 def highest_tie_options(values: list[str], lookup_keys: list[str]) -> list[str]:
+    """Returns a list which contains the best keys for a tie in the game"""
     highest_tie: int = -1
     highest_tie_keys: list[str] = []
 
